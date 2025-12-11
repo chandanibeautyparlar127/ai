@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chandni Parlor 127 | Premium Beauty Products</title>
+    <title>Chandni Parlor 127 | Sign Up & Login</title>
     
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -54,8 +54,8 @@
             display: block;
         }
 
-        /* Login Container */
-        .login-container {
+        /* Login/Signup Container */
+        .auth-container {
             display: flex;
             width: 100%;
             max-width: 1200px;
@@ -73,7 +73,7 @@
         }
 
         /* Left Side - Branding */
-        .login-left {
+        .auth-left {
             flex: 1;
             background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             padding: 60px;
@@ -85,7 +85,7 @@
             overflow: hidden;
         }
 
-        .login-left::before {
+        .auth-left::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -152,38 +152,68 @@
             opacity: 0.8;
         }
 
-        /* Right Side - Login Form */
-        .login-right {
+        /* Right Side - Auth Forms */
+        .auth-right {
             flex: 1;
             padding: 60px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             background: white;
+            position: relative;
+            overflow: hidden;
         }
 
-        .login-header {
+        .auth-forms {
+            position: relative;
+            width: 100%;
+        }
+
+        /* Login Form */
+        .login-form-container {
+            width: 100%;
+            transition: transform 0.5s ease;
+        }
+
+        .signup-form-container {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateX(100%);
+            transition: transform 0.5s ease;
+        }
+
+        .signup-form-container.active {
+            transform: translateX(0);
+        }
+
+        .login-form-container.shifted {
+            transform: translateX(-100%);
+        }
+
+        .auth-header {
             text-align: center;
             margin-bottom: 50px;
         }
 
-        .login-header h2 {
+        .auth-header h2 {
             font-size: 32px;
             color: var(--dark);
             margin-bottom: 10px;
         }
 
-        .login-header p {
+        .auth-header p {
             color: var(--border);
             font-size: 16px;
         }
 
-        /* Google Login Button */
-        .google-login-container {
+        /* Google Auth Button */
+        .google-auth-container {
             margin-bottom: 30px;
         }
 
-        .google-login-btn {
+        .google-auth-btn {
             width: 100%;
             padding: 18px;
             background: white;
@@ -201,14 +231,10 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .google-login-btn:hover {
+        .google-auth-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             border-color: #4285F4;
-        }
-
-        .google-login-btn:active {
-            transform: translateY(-1px);
         }
 
         .google-logo {
@@ -235,7 +261,7 @@
         .divider {
             display: flex;
             align-items: center;
-            margin: 40px 0;
+            margin: 30px 0;
         }
 
         .divider-line {
@@ -251,17 +277,17 @@
             font-weight: 500;
         }
 
-        /* Manual Login Form */
-        .manual-login-form {
+        /* Manual Form */
+        .manual-form {
             display: none;
         }
 
-        .manual-login-form.active {
+        .manual-form.active {
             display: block;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .form-label {
@@ -287,7 +313,16 @@
             box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
         }
 
-        .login-submit-btn {
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .auth-submit-btn {
             width: 100%;
             padding: 18px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -301,18 +336,19 @@
             margin-top: 10px;
         }
 
-        .login-submit-btn:hover {
+        .auth-submit-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3);
         }
 
-        .login-submit-btn:disabled {
+        .auth-submit-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
+        /* Form Footer */
         .form-footer {
             text-align: center;
             margin-top: 30px;
@@ -325,7 +361,7 @@
             font-size: 14px;
         }
 
-        .toggle-form-link {
+        .toggle-auth-link {
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
@@ -333,7 +369,7 @@
             margin-left: 5px;
         }
 
-        .toggle-form-link:hover {
+        .toggle-auth-link:hover {
             text-decoration: underline;
         }
 
@@ -348,6 +384,38 @@
         .terms a {
             color: var(--primary);
             text-decoration: none;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Notification */
@@ -392,16 +460,16 @@
 
         /* Responsive */
         @media (max-width: 992px) {
-            .login-container {
+            .auth-container {
                 flex-direction: column;
                 max-width: 500px;
             }
             
-            .login-left {
+            .auth-left {
                 padding: 40px;
             }
             
-            .login-right {
+            .auth-right {
                 padding: 40px;
             }
         }
@@ -411,7 +479,7 @@
                 padding: 10px;
             }
             
-            .login-left, .login-right {
+            .auth-left, .auth-right {
                 padding: 30px 20px;
             }
             
@@ -419,12 +487,17 @@
                 font-size: 28px;
             }
             
-            .login-header h2 {
+            .auth-header h2 {
                 font-size: 26px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
             }
         }
 
-        /* Main App Styles (Same as before) */
+        /* Main App Styles */
         .main-header {
             background: white;
             padding: 20px 40px;
@@ -565,9 +638,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Login Page -->
-    <div class="login-container" id="loginContainer">
-        <div class="login-left">
+    <!-- Auth Container (Login/Signup) -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-left">
             <div class="brand-logo">
                 <i class="fas fa-crown"></i>
                 <h1>Chandni Parlor 127</h1>
@@ -577,82 +650,154 @@
             <div class="features">
                 <div class="feature-item">
                     <div class="feature-icon">
+                        <i class="fas fa-google"></i>
+                    </div>
+                    <div class="feature-text">
+                        <h3>Google Sign Up</h3>
+                        <p>Quick sign up with your Gmail account</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
                     <div class="feature-text">
-                        <h3>Secure Google Login</h3>
-                        <p>Sign in securely with your Google account</p>
+                        <h3>Secure Verification</h3>
+                        <p>Google verified accounts only</p>
                     </div>
                 </div>
                 
                 <div class="feature-item">
                     <div class="feature-icon">
-                        <i class="fas fa-store"></i>
+                        <i class="fas fa-star"></i>
                     </div>
                     <div class="feature-text">
-                        <h3>Premium Products</h3>
-                        <p>Exclusive beauty products collection</p>
-                    </div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="feature-text">
-                        <h3>Members Only</h3>
-                        <p>Verified users get special access</p>
+                        <h3>Exclusive Access</h3>
+                        <p>Premium features for registered users</p>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="login-right">
-            <div class="login-header">
-                <h2>Welcome Back</h2>
-                <p>Sign in to access premium features</p>
+        <div class="auth-right">
+            <!-- Loading Overlay -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="spinner"></div>
             </div>
             
-            <!-- Google Login Button -->
-            <div class="google-login-container">
-                <button class="google-login-btn" id="googleLoginBtn">
-                    <div class="google-logo"></div>
-                    <span>Continue with Google</span>
-                </button>
-            </div>
-            
-            <div class="divider">
-                <div class="divider-line"></div>
-                <div class="divider-text">OR</div>
-                <div class="divider-line"></div>
-            </div>
-            
-            <!-- Manual Login Form (Hidden by default) -->
-            <div class="manual-login-form" id="manualLoginForm">
-                <form id="emailLoginForm">
-                    <div class="form-group">
-                        <label class="form-label" for="email">Email Address</label>
-                        <input type="email" class="form-input" id="email" placeholder="Enter your email" required>
+            <div class="auth-forms">
+                <!-- Login Form -->
+                <div class="login-form-container" id="loginFormContainer">
+                    <div class="auth-header">
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to your account</p>
                     </div>
                     
-                    <div class="form-group">
-                        <label class="form-label" for="password">Password</label>
-                        <input type="password" class="form-input" id="password" placeholder="Enter your password" required>
+                    <!-- Google Login Button -->
+                    <div class="google-auth-container">
+                        <button class="google-auth-btn" id="googleLoginBtn">
+                            <div class="google-logo"></div>
+                            <span>Continue with Google</span>
+                        </button>
                     </div>
                     
-                    <button type="submit" class="login-submit-btn" id="emailLoginBtn">
-                        <i class="fas fa-sign-in-alt"></i> Sign In
-                    </button>
-                </form>
-                
-                <div class="form-footer">
-                    <p>Don't have an account? <span class="toggle-form-link" id="toggleToGoogle">Use Google Sign In</span></p>
+                    <div class="divider">
+                        <div class="divider-line"></div>
+                        <div class="divider-text">OR</div>
+                        <div class="divider-line"></div>
+                    </div>
+                    
+                    <!-- Manual Login Form -->
+                    <div class="manual-form" id="manualLoginForm">
+                        <form id="emailLoginForm">
+                            <div class="form-group">
+                                <label class="form-label" for="loginEmail">Email Address</label>
+                                <input type="email" class="form-input" id="loginEmail" placeholder="Enter your email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="loginPassword">Password</label>
+                                <input type="password" class="form-input" id="loginPassword" placeholder="Enter your password" required>
+                            </div>
+                            
+                            <button type="submit" class="auth-submit-btn">
+                                <i class="fas fa-sign-in-alt"></i> Sign In
+                            </button>
+                        </form>
+                        
+                        <div class="form-footer">
+                            <p>Don't have an account? <span class="toggle-auth-link" id="showSignupForm">Sign up here</span></p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Admin Signup Link (Hidden by default) -->
-            <div class="form-footer" id="adminSignupSection">
-                <p>For admin access, please <span class="toggle-form-link" id="toggleToAdmin">contact support</span></p>
+                
+                <!-- Signup Form -->
+                <div class="signup-form-container" id="signupFormContainer">
+                    <div class="auth-header">
+                        <h2>Create Account</h2>
+                        <p>Sign up for exclusive access</p>
+                    </div>
+                    
+                    <!-- Google Signup Button -->
+                    <div class="google-auth-container">
+                        <button class="google-auth-btn" id="googleSignupBtn">
+                            <div class="google-logo"></div>
+                            <span>Sign up with Google</span>
+                        </button>
+                    </div>
+                    
+                    <div class="divider">
+                        <div class="divider-line"></div>
+                        <div class="divider-text">OR</div>
+                        <div class="divider-line"></div>
+                    </div>
+                    
+                    <!-- Manual Signup Form -->
+                    <div class="manual-form" id="manualSignupForm">
+                        <form id="emailSignupForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="signupFirstName">First Name</label>
+                                    <input type="text" class="form-input" id="signupFirstName" placeholder="First name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="signupLastName">Last Name</label>
+                                    <input type="text" class="form-input" id="signupLastName" placeholder="Last name" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="signupEmail">Email Address</label>
+                                <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="signupPassword">Password</label>
+                                <input type="password" class="form-input" id="signupPassword" placeholder="Create a password" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="confirmPassword">Confirm Password</label>
+                                <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="phoneNumber">Phone Number (Optional)</label>
+                                <input type="tel" class="form-input" id="phoneNumber" placeholder="+91 98765 43210">
+                            </div>
+                            
+                            <button type="submit" class="auth-submit-btn">
+                                <i class="fas fa-user-plus"></i> Create Account
+                            </button>
+                        </form>
+                        
+                        <div class="form-footer">
+                            <p>Already have an account? <span class="toggle-auth-link" id="showLoginForm">Sign in here</span></p>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="terms">
@@ -745,7 +890,7 @@
                 </div>
                 
                 <p>© 2024 Chandni Parlor 127 | Premium Beauty Products</p>
-                <p style="margin-top: 10px; opacity: 0.8;">Only Google Authentication | No Signup Without Verification</p>
+                <p style="margin-top: 10px; opacity: 0.8;">Google Signup & Login | Secure Authentication</p>
             </div>
         </footer>
     </div>
@@ -770,7 +915,6 @@
 
         // Application State
         let currentUser = null;
-        let isGoogleProviderEnabled = true;
 
         // Initialize Application
         document.addEventListener('DOMContentLoaded', () => {
@@ -781,14 +925,20 @@
         // Setup Event Listeners
         function setupEventListeners() {
             // Google Login Button
-            document.getElementById('googleLoginBtn').addEventListener('click', handleGoogleLogin);
+            document.getElementById('googleLoginBtn').addEventListener('click', () => handleGoogleAuth('login'));
             
-            // Toggle between Google and Email login
-            document.getElementById('toggleToAdmin').addEventListener('click', toggleToEmailLogin);
-            document.getElementById('toggleToGoogle').addEventListener('click', toggleToGoogleLogin);
+            // Google Signup Button
+            document.getElementById('googleSignupBtn').addEventListener('click', () => handleGoogleAuth('signup'));
+            
+            // Toggle between Login and Signup forms
+            document.getElementById('showSignupForm').addEventListener('click', showSignupForm);
+            document.getElementById('showLoginForm').addEventListener('click', showLoginForm);
             
             // Email login form
             document.getElementById('emailLoginForm').addEventListener('submit', handleEmailLogin);
+            
+            // Email signup form
+            document.getElementById('emailSignupForm').addEventListener('submit', handleEmailSignup);
             
             // Logout button
             document.getElementById('logoutBtn').addEventListener('click', handleLogout);
@@ -804,16 +954,62 @@
                         email: user.email,
                         name: user.displayName || user.email.split('@')[0],
                         photoURL: user.photoURL,
-                        provider: user.providerData[0]?.providerId || 'google'
+                        provider: user.providerData[0]?.providerId || 'google',
+                        emailVerified: user.emailVerified
                     };
                     
                     // Check if user exists in database
                     checkUserInDatabase(user.uid, user.email);
                 } else {
                     // User is not signed in
-                    showLogin();
+                    showAuthPage();
                 }
             });
+        }
+
+        // Handle Google Authentication
+        function handleGoogleAuth(action) {
+            showLoading(true);
+            
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            // Add scopes
+            provider.addScope('profile');
+            provider.addScope('email');
+            
+            // Force account selection for signup
+            if (action === 'signup') {
+                provider.setCustomParameters({
+                    prompt: 'select_account'
+                });
+            }
+            
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    
+                    if (action === 'signup') {
+                        showNotification('Account created successfully with Google!', 'success');
+                    } else {
+                        showNotification('Signed in successfully!', 'success');
+                    }
+                    
+                    // User will be handled in onAuthStateChanged
+                })
+                .catch((error) => {
+                    console.error('Google auth error:', error);
+                    showLoading(false);
+                    
+                    if (error.code === 'auth/popup-blocked') {
+                        showNotification('Popup blocked! Please allow popups for this site.', 'error');
+                    } else if (error.code === 'auth/popup-closed-by-user') {
+                        showNotification('Authentication cancelled by user.', 'info');
+                    } else if (error.code === 'auth/account-exists-with-different-credential') {
+                        showNotification('An account already exists with this email. Please sign in instead.', 'error');
+                    } else {
+                        showNotification(`Google ${action} failed. Please try again.`, 'error');
+                    }
+                });
         }
 
         // Check if user exists in database
@@ -826,15 +1022,23 @@
                         // User exists in database
                         const userData = snapshot.val();
                         currentUser = { ...currentUser, ...userData };
+                        
+                        // Update last login time
+                        usersRef.update({
+                            lastLogin: new Date().toISOString()
+                        });
+                        
                         localStorage.setItem('chandniParlorUser', JSON.stringify(currentUser));
                         showMainContent();
                     } else {
-                        // User doesn't exist - first time login
+                        // User doesn't exist - first time login (signup)
                         registerNewUser(uid, email);
                     }
+                    showLoading(false);
                 })
                 .catch((error) => {
                     console.error('Database error:', error);
+                    showLoading(false);
                     showNotification('Error checking user data', 'error');
                 });
         }
@@ -844,10 +1048,13 @@
             const userData = {
                 email: email,
                 name: currentUser.name,
+                photoURL: currentUser.photoURL || '',
                 createdAt: new Date().toISOString(),
                 lastLogin: new Date().toISOString(),
                 isVerified: true,
-                provider: 'google'
+                provider: 'google',
+                accountType: 'customer',
+                status: 'active'
             };
             
             const usersRef = database.ref('users/' + uid);
@@ -857,7 +1064,7 @@
                     currentUser = { ...currentUser, ...userData };
                     localStorage.setItem('chandniParlorUser', JSON.stringify(currentUser));
                     showMainContent();
-                    showNotification('Account created successfully! Welcome!', 'success');
+                    showNotification('Welcome! Your account has been created successfully.', 'success');
                 })
                 .catch((error) => {
                     console.error('Registration error:', error);
@@ -865,98 +1072,171 @@
                 });
         }
 
-        // Handle Google Login
-        function handleGoogleLogin() {
-            const provider = new firebase.auth.GoogleAuthProvider();
+        // Handle Email Signup (Manual)
+        function handleEmailSignup(e) {
+            e.preventDefault();
+            showLoading(true);
             
-            // Add scopes if needed
-            provider.addScope('profile');
-            provider.addScope('email');
+            const firstName = document.getElementById('signupFirstName').value.trim();
+            const lastName = document.getElementById('signupLastName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phone = document.getElementById('phoneNumber').value.trim();
             
-            // Force account selection
-            provider.setCustomParameters({
-                prompt: 'select_account'
-            });
+            // Validation
+            if (!firstName || !lastName || !email || !password || !confirmPassword) {
+                showNotification('Please fill in all required fields', 'error');
+                showLoading(false);
+                return;
+            }
             
-            showNotification('Redirecting to Google for authentication...', 'info');
+            if (password !== confirmPassword) {
+                showNotification('Passwords do not match', 'error');
+                showLoading(false);
+                return;
+            }
             
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    // Google sign-in successful
-                    const user = result.user;
-                    showNotification('Google authentication successful!', 'success');
+            if (password.length < 6) {
+                showNotification('Password must be at least 6 characters', 'error');
+                showLoading(false);
+                return;
+            }
+            
+            // Check if email is Gmail
+            if (!email.toLowerCase().endsWith('@gmail.com')) {
+                showNotification('Please use a Gmail account for signup', 'error');
+                showLoading(false);
+                return;
+            }
+            
+            // Create user with email/password
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
                     
-                    // User will be handled in onAuthStateChanged
+                    // Update user profile
+                    return user.updateProfile({
+                        displayName: `${firstName} ${lastName}`
+                    }).then(() => {
+                        // Send email verification
+                        return user.sendEmailVerification();
+                    }).then(() => {
+                        // Save user data to database
+                        const userData = {
+                            email: email,
+                            name: `${firstName} ${lastName}`,
+                            firstName: firstName,
+                            lastName: lastName,
+                            phone: phone || '',
+                            createdAt: new Date().toISOString(),
+                            lastLogin: new Date().toISOString(),
+                            isVerified: false, // Email verification pending
+                            provider: 'email',
+                            accountType: 'customer',
+                            status: 'pending_verification'
+                        };
+                        
+                        return database.ref('users/' + user.uid).set(userData);
+                    });
+                })
+                .then(() => {
+                    showLoading(false);
+                    showNotification('Account created! Please check your email for verification link.', 'success');
+                    
+                    // Switch back to login form
+                    setTimeout(() => {
+                        showLoginForm();
+                        document.getElementById('emailSignupForm').reset();
+                    }, 2000);
                 })
                 .catch((error) => {
-                    console.error('Google login error:', error);
+                    showLoading(false);
+                    console.error('Signup error:', error);
                     
-                    if (error.code === 'auth/popup-blocked') {
-                        showNotification('Popup blocked! Please allow popups for this site.', 'error');
-                    } else if (error.code === 'auth/popup-closed-by-user') {
-                        showNotification('Login cancelled by user.', 'info');
+                    if (error.code === 'auth/email-already-in-use') {
+                        showNotification('This email is already registered. Please sign in instead.', 'error');
+                    } else if (error.code === 'auth/invalid-email') {
+                        showNotification('Invalid email address', 'error');
+                    } else if (error.code === 'auth/weak-password') {
+                        showNotification('Password is too weak', 'error');
                     } else {
-                        showNotification('Google login failed. Please try again.', 'error');
+                        showNotification('Signup failed. Please try again.', 'error');
                     }
                 });
         }
 
-        // Handle Email Login (For admin only - disabled for regular users)
+        // Handle Email Login (Manual)
         function handleEmailLogin(e) {
             e.preventDefault();
+            showLoading(true);
             
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
             
             if (!email || !password) {
                 showNotification('Please fill in all fields', 'error');
+                showLoading(false);
                 return;
             }
             
-            // Only allow admin emails (you can customize this list)
-            const adminEmails = ['admin@chandniparlor.com', 'owner@chandniparlor.com'];
-            
-            if (!adminEmails.includes(email.toLowerCase())) {
-                showNotification('Email login is only available for administrators. Please use Google Sign In.', 'error');
-                return;
-            }
-            
-            showNotification('Admin login attempt...', 'info');
-            
-            // Note: This is just for demonstration
-            // In real implementation, you would use Firebase Email/Password auth
-            setTimeout(() => {
-                showNotification('Admin access requires manual approval. Please contact support.', 'info');
-            }, 1000);
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    
+                    if (!user.emailVerified) {
+                        // Ask user to verify email
+                        showLoading(false);
+                        showNotification('Please verify your email before signing in. Check your inbox.', 'error');
+                        auth.signOut(); // Sign out unverified user
+                        return;
+                    }
+                    
+                    // User will be handled in onAuthStateChanged
+                })
+                .catch((error) => {
+                    showLoading(false);
+                    console.error('Login error:', error);
+                    
+                    if (error.code === 'auth/user-not-found') {
+                        showNotification('No account found with this email. Please sign up first.', 'error');
+                    } else if (error.code === 'auth/wrong-password') {
+                        showNotification('Incorrect password', 'error');
+                    } else if (error.code === 'auth/invalid-credential') {
+                        showNotification('Invalid credentials', 'error');
+                    } else {
+                        showNotification('Login failed. Please try again.', 'error');
+                    }
+                });
         }
 
-        // Toggle to Email Login (Admin only)
-        function toggleToEmailLogin() {
-            document.getElementById('googleLoginBtn').style.display = 'none';
-            document.getElementById('manualLoginForm').classList.add('active');
-            document.getElementById('adminSignupSection').style.display = 'none';
-            showNotification('Admin login mode activated', 'info');
+        // Show Signup Form
+        function showSignupForm() {
+            document.getElementById('loginFormContainer').classList.add('shifted');
+            document.getElementById('signupFormContainer').classList.add('active');
         }
 
-        // Toggle back to Google Login
-        function toggleToGoogleLogin() {
-            document.getElementById('googleLoginBtn').style.display = 'flex';
-            document.getElementById('manualLoginForm').classList.remove('active');
-            document.getElementById('adminSignupSection').style.display = 'block';
-            showNotification('Google Sign In activated', 'info');
+        // Show Login Form
+        function showLoginForm() {
+            document.getElementById('loginFormContainer').classList.remove('shifted');
+            document.getElementById('signupFormContainer').classList.remove('active');
         }
 
         // Handle Logout
         function handleLogout() {
+            showLoading(true);
+            
             auth.signOut()
                 .then(() => {
                     currentUser = null;
                     localStorage.removeItem('chandniParlorUser');
-                    showLogin();
+                    showLoading(false);
+                    showAuthPage();
                     showNotification('Logged out successfully', 'success');
                 })
                 .catch((error) => {
                     console.error('Logout error:', error);
+                    showLoading(false);
                     showNotification('Logout failed', 'error');
                 });
         }
@@ -982,23 +1262,27 @@
             }
         }
 
-        // Show Login Screen
-        function showLogin() {
-            document.getElementById('loginContainer').style.display = 'flex';
+        // Show Auth Page
+        function showAuthPage() {
+            document.getElementById('authContainer').style.display = 'flex';
             document.getElementById('mainContainer').classList.remove('active');
+            showLoginForm();
             
-            // Reset form
+            // Reset forms
             document.getElementById('emailLoginForm').reset();
-            document.getElementById('googleLoginBtn').style.display = 'flex';
-            document.getElementById('manualLoginForm').classList.remove('active');
-            document.getElementById('adminSignupSection').style.display = 'block';
+            document.getElementById('emailSignupForm').reset();
         }
 
         // Show Main Content
         function showMainContent() {
-            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('authContainer').style.display = 'none';
             document.getElementById('mainContainer').classList.add('active');
             updateUserInfo();
+        }
+
+        // Show Loading
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('active', show);
         }
 
         // Show Notification
@@ -1035,13 +1319,13 @@
             }, 5000);
         }
 
-        // Display Login Requirements
-        console.log('🔐 SECURE LOGIN SYSTEM');
-        console.log('✅ Only Google Authentication allowed');
-        console.log('✅ No signup without verification');
-        console.log('✅ Users automatically registered on first Google login');
-        console.log('✅ Database stores verified users only');
+        // Display System Info
+        console.log('🔐 GOOGLE SIGNUP & LOGIN SYSTEM');
+        console.log('✅ Google Signup with Gmail accounts');
+        console.log('✅ Manual email signup (Gmail only)');
+        console.log('✅ Email verification for manual signup');
         console.log('✅ Secure Firebase authentication');
+        console.log('✅ User data stored in database');
     </script>
 </body>
 </html>
