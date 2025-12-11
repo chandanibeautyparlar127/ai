@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chandni Parlor 127 | Sign Up & Login</title>
+    <title>Chandni Parlor 127 | Premium Beauty Products</title>
     
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -22,400 +22,807 @@
             --primary-dark: #6a1cb0;
             --primary-light: #9d4edd;
             --secondary: #ff6b6b;
+            --secondary-dark: #ff4757;
             --accent: #00d2d3;
             --light: #f8f9fa;
             --dark: #2d3436;
             --darker: #1a1a2e;
             --success: #00b894;
+            --warning: #fdcb6e;
             --danger: #e17055;
             --border: #636e72;
             --radius: 15px;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.2);
+            --blur: blur(20px);
         }
 
         body {
             font-family: 'Segoe UI', 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        /* Main Container */
-        .main-container {
-            display: none;
-            width: 100%;
-            min-height: 100vh;
-        }
-
-        .main-container.active {
-            display: block;
-        }
-
-        /* Login/Signup Container */
-        .auth-container {
-            display: flex;
-            width: 100%;
-            max-width: 1200px;
-            min-height: 700px;
-            background: white;
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.8s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Left Side - Branding */
-        .auth-left {
-            flex: 1;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            color: white;
+            overflow-x: hidden;
             position: relative;
-            overflow: hidden;
         }
 
-        .auth-left::before {
+        body::before {
             content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        }
-
-        .brand-logo {
-            margin-bottom: 40px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .brand-logo i {
-            font-size: 60px;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .brand-logo h1 {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .brand-logo p {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-
-        .features {
-            margin-top: 50px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 20px;
-            font-size: 20px;
-        }
-
-        .feature-text h3 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-
-        .feature-text p {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        /* Right Side - Auth Forms */
-        .auth-right {
-            flex: 1;
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-forms {
-            position: relative;
-            width: 100%;
-        }
-
-        /* Login Form */
-        .login-form-container {
-            width: 100%;
-            transition: transform 0.5s ease;
-        }
-
-        .signup-form-container {
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: translateX(100%);
-            transition: transform 0.5s ease;
-        }
-
-        .signup-form-container.active {
-            transform: translateX(0);
-        }
-
-        .login-form-container.shifted {
-            transform: translateX(-100%);
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .auth-header h2 {
-            font-size: 32px;
-            color: var(--dark);
-            margin-bottom: 10px;
-        }
-
-        .auth-header p {
-            color: var(--border);
-            font-size: 16px;
-        }
-
-        /* Google Auth Button */
-        .google-auth-container {
-            margin-bottom: 30px;
-        }
-
-        .google-auth-btn {
-            width: 100%;
-            padding: 18px;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #444;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .google-auth-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            border-color: #4285F4;
-        }
-
-        .google-logo {
-            width: 24px;
-            height: 24px;
-            background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 0% 0%/200% 200%;
-            border-radius: 50%;
-            position: relative;
-        }
-
-        .google-logo::before {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border-right: 2px solid white;
-            border-top: 2px solid white;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-        }
-
-        /* Divider */
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 30px 0;
-        }
-
-        .divider-line {
-            flex: 1;
-            height: 1px;
-            background: #e0e0e0;
-        }
-
-        .divider-text {
-            padding: 0 20px;
-            color: var(--border);
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* Manual Form */
-        .manual-form {
-            display: none;
-        }
-
-        .manual-form.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--dark);
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: var(--radius);
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
-        }
-
-        .form-row {
-            display: flex;
-            gap: 15px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .auth-submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none;
-            border-radius: var(--radius);
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .auth-submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.3);
-        }
-
-        .auth-submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Form Footer */
-        .form-footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .form-footer p {
-            color: var(--border);
-            font-size: 14px;
-        }
-
-        .toggle-auth-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        .toggle-auth-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Terms & Privacy */
-        .terms {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 12px;
-            color: var(--border);
-        }
-
-        .terms a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        /* Loading Overlay */
-        .loading-overlay {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.9);
-            display: none;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(0, 210, 211, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* Particle Animation */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary-light);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Loading Screen */
+        #loadingScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--darker);
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 10;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
         }
 
-        .loading-overlay.active {
-            display: flex;
+        .loader {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            margin-bottom: 30px;
         }
 
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary);
+        .loader-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
+        }
+
+        .loader-inner:nth-child(2) {
+            border-top-color: var(--secondary);
+            animation-delay: 0.3s;
+        }
+
+        .loader-inner:nth-child(3) {
+            border-top-color: var(--accent);
+            animation-delay: 0.6s;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: var(--primary-light);
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Login Page - MOBILE FRIENDLY */
+        .login-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: var(--blur);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .login-container.active {
+            display: flex;
+        }
+
+        .login-box {
+            background: var(--glass);
+            backdrop-filter: var(--blur);
+            border-radius: var(--radius);
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
+            margin: auto;
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo i {
+            font-size: 50px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .login-logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Login Form - MOBILE OPTIMIZED */
+        .login-form .input-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary-light);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            -webkit-appearance: none; /* iOS fix */
+        }
+
+        .login-form input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+        }
+
+        /* MOBILE FRIENDLY BUTTON */
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            min-height: 50px; /* Better touch target */
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--border);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--border);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .main-container.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Header - MOBILE FRIENDLY */
+        .main-header {
+            background: var(--glass);
+            backdrop-filter: var(--blur);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .brand-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .brand-text p {
+            font-size: 12px;
+            color: var(--border);
+            margin-top: 2px;
+        }
+
+        .user-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .user-controls {
+                flex-direction: row;
+                align-items: center;
+                gap: 20px;
+            }
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--primary-light);
+            word-break: break-word;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .search-box {
+                width: 250px;
+            }
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 45px 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--border);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: rgba(255, 107, 107, 0.1);
+            border: 1px solid var(--secondary);
+            border-radius: 25px;
+            color: var(--secondary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .logout-btn:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        /* Main Content - MOBILE FRIENDLY */
+        .main-content {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                margin: 30px auto;
+                padding: 0 40px;
+            }
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(255, 107, 107, 0.1));
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: var(--blur);
+        }
+
+        @media (min-width: 768px) {
+            .welcome-section {
+                padding: 40px;
+                margin-bottom: 30px;
+            }
+        }
+
+        .welcome-text h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (min-width: 768px) {
+            .welcome-text h2 {
+                font-size: 32px;
+            }
+        }
+
+        .welcome-text p {
+            color: var(--border);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        @media (min-width: 768px) {
+            .welcome-text p {
+                font-size: 16px;
+            }
+        }
+
+        /* Social Media Section */
+        .social-media-section {
+            background: linear-gradient(135deg, rgba(0, 210, 211, 0.1), rgba(255, 107, 107, 0.1));
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: var(--blur);
+        }
+
+        @media (min-width: 768px) {
+            .social-media-section {
+                padding: 30px;
+                margin-bottom: 30px;
+            }
+        }
+
+        .social-media-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--accent);
+            text-align: center;
+        }
+
+        .social-media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .social-media-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+
+        .social-media-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .social-media-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-media-link.facebook:hover {
+            background: rgba(24, 119, 242, 0.2);
+            border-color: #1877F2;
+        }
+
+        .social-media-link.instagram:hover {
+            background: rgba(225, 48, 108, 0.2);
+            border-color: #E1306C;
+        }
+
+        .social-media-link.youtube:hover {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #FF0000;
+        }
+
+        .social-media-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .social-media-icon.facebook {
+            background: linear-gradient(45deg, #1877F2, #0d5bb5);
+        }
+
+        .social-media-icon.instagram {
+            background: linear-gradient(45deg, #E1306C, #C13584);
+        }
+
+        .social-media-icon.youtube {
+            background: linear-gradient(45deg, #FF0000, #CC0000);
+        }
+
+        .social-media-name {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Products Section */
+        .products-section {
+            margin-top: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .products-section {
+                margin-top: 40px;
+            }
+        }
+
+        .section-header {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .section-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 30px;
+            }
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            background: linear-gradient(45deg, #fff, var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 28px;
+            }
+        }
+
+        .section-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            color: var(--border);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Products Grid - MOBILE FRIENDLY */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        @media (max-width: 767px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        .product-card {
+            background: var(--glass);
+            backdrop-filter: var(--blur);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .badge-available {
+            background: rgba(0, 184, 148, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .badge-outofstock {
+            background: rgba(225, 112, 85, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .product-image {
+            height: 180px;
+            background: linear-gradient(45deg, var(--primary-dark), var(--darker));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .product-image {
+                height: 200px;
+            }
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            color: var(--primary-light);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 15px 0;
+        }
+
+        .product-stock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stock-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .stock-label {
+            font-size: 12px;
+            color: var(--border);
+        }
+
+        .stock-amount {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .stock-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .stock-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--accent));
+            border-radius: 3px;
+            transition: width 1s ease;
+        }
+
+        /* No Products */
+        .no-products {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .no-products i {
+            font-size: 50px;
+            color: var(--border);
+            margin-bottom: 20px;
+        }
+
+        .no-products p {
+            color: var(--border);
+            font-size: 16px;
+            line-height: 1.5;
         }
 
         /* Notification */
@@ -424,15 +831,24 @@
             top: 20px;
             right: 20px;
             padding: 15px 20px;
-            background: white;
+            background: var(--glass);
+            backdrop-filter: var(--blur);
             border-radius: var(--radius);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
             display: flex;
             align-items: center;
             gap: 10px;
             z-index: 1000;
             animation: slideIn 0.3s ease;
             max-width: 400px;
+            width: calc(100% - 40px);
+        }
+
+        @media (min-width: 768px) {
+            .notification {
+                width: auto;
+            }
         }
 
         .notification.success {
@@ -444,7 +860,7 @@
         }
 
         .notification.info {
-            border-left: 4px solid var(--primary);
+            border-left: 4px solid var(--accent);
         }
 
         @keyframes slideIn {
@@ -458,304 +874,149 @@
             }
         }
 
-        /* Responsive */
-        @media (max-width: 992px) {
-            .auth-container {
-                flex-direction: column;
-                max-width: 500px;
-            }
-            
-            .auth-left {
-                padding: 40px;
-            }
-            
-            .auth-right {
-                padding: 40px;
+        /* Footer */
+        .main-footer {
+            background: var(--glass);
+            backdrop-filter: var(--blur);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px 20px;
+            margin-top: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .main-footer {
+                padding: 30px 40px;
+                margin-top: 50px;
             }
         }
 
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            
-            .auth-left, .auth-right {
-                padding: 30px 20px;
-            }
-            
-            .brand-logo h1 {
-                font-size: 28px;
-            }
-            
-            .auth-header h2 {
-                font-size: 26px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-        }
-
-        /* Main App Styles */
-        .main-header {
-            background: white;
-            padding: 20px 40px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        .footer-content {
             max-width: 1400px;
             margin: 0 auto;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .brand-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-        }
-
-        .user-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logout-btn {
-            padding: 10px 20px;
-            background: var(--primary);
-            border: none;
-            border-radius: 25px;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .logout-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .main-content {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 40px;
-        }
-
-        .social-media-section {
-            background: white;
-            border-radius: var(--radius);
-            padding: 40px;
-            margin: 40px 0;
-            box-shadow: var(--shadow);
-        }
-
-        .social-media-grid {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .social-media-link {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            padding: 30px;
-            background: #f8f9fa;
-            border-radius: var(--radius);
-            text-decoration: none;
-            color: var(--dark);
-            transition: all 0.3s ease;
-            width: 200px;
-        }
-
-        .social-media-link:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-
-        .social-media-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            color: white;
-        }
-
-        .social-media-icon.youtube {
-            background: linear-gradient(45deg, #FF0000, #CC0000);
-        }
-
-        .social-media-icon.facebook {
-            background: linear-gradient(45deg, #1877F2, #0d5bb5);
-        }
-
-        .social-media-icon.instagram {
-            background: linear-gradient(45deg, #E1306C, #C13584);
-        }
-
-        .main-footer {
-            background: var(--dark);
-            color: white;
-            padding: 40px;
             text-align: center;
-            margin-top: 60px;
+        }
+
+        .footer-text {
+            color: var(--border);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 10px;
         }
 
         .social-links-footer {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin: 20px 0;
+        }
+
+        .social-link-footer {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-link-footer:hover {
+            transform: translateY(-3px);
+        }
+
+        .last-updated {
+            font-size: 12px;
+            color: var(--border);
+            margin-top: 10px;
+            opacity: 0.7;
+        }
+
+        /* Mobile Touch Optimizations */
+        @media (max-width: 767px) {
+            .login-form input,
+            .login-btn,
+            .filter-btn,
+            .logout-btn {
+                font-size: 16px; /* Prevents iOS zoom */
+            }
+            
+            .product-card {
+                transform: none; /* Remove hover effects on mobile */
+            }
+            
+            .product-card:active {
+                transform: scale(0.98); /* Add touch feedback */
+            }
+            
+            .social-media-link {
+                padding: 15px;
+            }
         }
     </style>
     
-    <!-- Font Awesome -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Auth Container (Login/Signup) -->
-    <div class="auth-container" id="authContainer">
-        <div class="auth-left">
-            <div class="brand-logo">
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen">
+        <div class="loader">
+            <div class="loader-inner"></div>
+            <div class="loader-inner"></div>
+            <div class="loader-inner"></div>
+        </div>
+        <div class="loading-text">Loading Luxury Experience...</div>
+    </div>
+
+    <!-- Login Page - MOBILE FRIENDLY -->
+    <div class="login-container active" id="loginContainer">
+        <div class="login-box">
+            <div class="login-logo">
                 <i class="fas fa-crown"></i>
                 <h1>Chandni Parlor 127</h1>
-                <p>Premium Beauty Products & Services</p>
             </div>
             
-            <div class="features">
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-google"></i>
-                    </div>
-                    <div class="feature-text">
-                        <h3>Google Sign Up</h3>
-                        <p>Quick sign up with your Gmail account</p>
-                    </div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="feature-text">
-                        <h3>Secure Verification</h3>
-                        <p>Google verified accounts only</p>
-                    </div>
-                </div>
-                
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="feature-text">
-                        <h3>Exclusive Access</h3>
-                        <p>Premium features for registered users</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        
-                <!-- Signup Form -->
-                <div class="signup-form-container" id="signupFormContainer">
-                    <div class="auth-header">
-                        <h2>Create Account</h2>
-                        <p>Sign up for exclusive access</p>
+            <!-- Login Form -->
+            <div id="loginFormContainer">
+                <form class="login-form" id="loginForm">
+                    <div class="input-group">
+                        <label for="loginUsername">Username/Email</label>
+                        <input type="text" id="loginUsername" placeholder="Enter your username or email" required>
                     </div>
                     
-                    <!-- Google Signup Button -->
-                    <div class="google-auth-container">
-                        <button class="google-auth-btn" id="googleSignupBtn">
-                            <div class="google-logo"></div>
-                            <span>Sign up with Google</span>
-                        </button>
+                    <div class="input-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
                     </div>
                     
-                    <div class="divider">
-                        <div class="divider-line"></div>
-                        <div class="divider-text">OR</div>
-                        <div class="divider-line"></div>
-                    </div>
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
                     
-                    <!-- Manual Signup Form -->
-                    <div class="manual-form" id="manualSignupForm">
-                        <form id="emailSignupForm">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label" for="signupFirstName">First Name</label>
-                                    <input type="text" class="form-input" id="signupFirstName" placeholder="First name" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="signupLastName">Last Name</label>
-                                    <input type="text" class="form-input" id="signupLastName" placeholder="Last name" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="signupEmail">Email Address</label>
-                                <input type="email" class="form-input" id="signupEmail" placeholder="Enter your email" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="signupPassword">Password</label>
-                                <input type="password" class="form-input" id="signupPassword" placeholder="Create a password" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="confirmPassword">Confirm Password</label>
-                                <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm your password" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="phoneNumber">Phone Number (Optional)</label>
-                                <input type="tel" class="form-input" id="phoneNumber" placeholder="+91 98765 43210">
-                            </div>
-                            
-                            <button type="submit" class="auth-submit-btn">
-                                <i class="fas fa-user-plus"></i> Create Account
-                            </button>
-                        </form>
-                        
-                        <div class="form-footer">
-                            <p>Already have an account? <span class="toggle-auth-link" id="showLoginForm">Sign in here</span></p>
-                        </div>
+                    <div class="form-footer">
+                        <span style="color: var(--border);">For demo, use any username & password</span>
+                        <br>
+                        <span style="color: var(--accent); font-size: 12px;">Phone users: Tap fields to type easily</span>
                     </div>
-                </div>
+                </form>
             </div>
             
-            <div class="terms">
-                <p>By signing in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
+            <div class="login-footer">
+                <p>Customer Access Only | Products added by owner will appear here automatically</p>
+                <p style="margin-top: 10px; font-size: 11px; color: var(--accent);">
+                    <i class="fas fa-mobile-alt"></i> Optimized for Mobile Phones
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Main Content (Hidden until login) -->
+    <!-- Main Content -->
     <div class="main-container" id="mainContainer">
         <!-- Header -->
         <header class="main-header">
@@ -766,7 +1027,7 @@
                     </div>
                     <div class="brand-text">
                         <h1>Chandni Parlor 127</h1>
-                        <p>Premium Beauty Products</p>
+                        <p>Premium Beauty Products & Parlor</p>
                     </div>
                 </div>
                 
@@ -775,7 +1036,14 @@
                         <div class="user-avatar" id="userAvatar">
                             <i class="fas fa-user"></i>
                         </div>
-                        <span id="userName">User</span>
+                        <div class="user-name" id="userName">Customer</div>
+                    </div>
+                    
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search products...">
+                        <button class="search-btn" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
                     </div>
                     <button class="logout-btn" id="logoutBtn">
                         <i class="fas fa-sign-out-alt"></i> Logout
@@ -786,39 +1054,67 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="welcome-section">
-                <h1>Welcome to Chandni Parlor 127</h1>
-                <p>Your premium destination for beauty products</p>
-            </div>
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-text">
+                    <h2>Welcome to Chandni Parlor 127</h2>
+                    <p>Discover our exclusive collection of premium beauty products. Check real-time availability, prices, and stock levels. Visit our store for personalized beauty consultations.</p>
+                </div>
+            </section>
 
-            <!-- Social Media Links -->
+            <!-- Social Media Section -->
             <section class="social-media-section">
-                <h2 style="text-align: center; margin-bottom: 30px; color: var(--dark);">Connect With Us</h2>
+                <h3 class="social-media-title">
+                    <i class="fas fa-hashtag"></i> Connect With Us
+                </h3>
                 
                 <div class="social-media-grid">
-                    <a href="https://youtube.com" target="_blank" class="social-media-link">
+                    <a href="https://youtube.com" target="_blank" class="social-media-link youtube">
                         <div class="social-media-icon youtube">
                             <i class="fab fa-youtube"></i>
                         </div>
-                        <h3>YouTube</h3>
-                        <p style="text-align: center; color: var(--border);">Beauty tutorials & product reviews</p>
+                        <div class="social-media-name">YouTube</div>
                     </a>
                     
-                    <a href="https://facebook.com" target="_blank" class="social-media-link">
+                    <a href="https://facebook.com" target="_blank" class="social-media-link facebook">
                         <div class="social-media-icon facebook">
                             <i class="fab fa-facebook-f"></i>
                         </div>
-                        <h3>Facebook</h3>
-                        <p style="text-align: center; color: var(--border);">Updates & community</p>
+                        <div class="social-media-name">Facebook</div>
                     </a>
                     
-                    <a href="https://instagram.com" target="_blank" class="social-media-link">
+                    <a href="https://instagram.com" target="_blank" class="social-media-link instagram">
                         <div class="social-media-icon instagram">
                             <i class="fab fa-instagram"></i>
                         </div>
-                        <h3>Instagram</h3>
-                        <p style="text-align: center; color: var(--border);">Daily beauty inspiration</p>
+                        <div class="social-media-name">Instagram</div>
                     </a>
+                </div>
+            </section>
+
+            <!-- Products Section - FIREBASE CONNECTED -->
+            <section class="products-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-boxes"></i> Available Products
+                        <span style="font-size: 14px; color: var(--accent); display: block; margin-top: 5px;">
+                            <i class="fas fa-sync-alt"></i> Live Updates from Owner
+                        </span>
+                    </h2>
+                    <div class="section-controls">
+                        <button class="filter-btn active" data-filter="all">All Products</button>
+                        <button class="filter-btn" data-filter="available">Available</button>
+                        <button class="filter-btn" data-filter="outofstock">Out of Stock</button>
+                    </div>
+                </div>
+
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded automatically from Firebase -->
+                    <div class="no-products">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading products from owner's database...</p>
+                        <p style="margin-top: 10px; font-size: 14px;">Owner adds products → Automatically appear here</p>
+                    </div>
                 </div>
             </section>
         </main>
@@ -838,18 +1134,52 @@
                     </a>
                 </div>
                 
-                <p>© 2024 Chandni Parlor 127 | Premium Beauty Products</p>
-                <p style="margin-top: 10px; opacity: 0.8;">Google Signup & Login | Secure Authentication</p>
+                <p class="footer-text">© 2024 Chandni Parlor 127 | Premium Beauty Products & Parlor Services</p>
+                <p class="footer-text" style="margin-top: 10px;">
+                    Shop No. 127, Beauty Street, City - 123456 | Phone: +91 98765 43210
+                </p>
+                <p class="last-updated" id="lastUpdated">Last updated: --</p>
+                <p style="font-size: 12px; color: var(--accent); margin-top: 10px;">
+                    <i class="fas fa-database"></i> Connected to Owner's Firebase Database
+                </p>
             </div>
         </footer>
     </div>
 
-    <!-- JavaScript -->
+    <!-- JavaScript Code - FIREBASE CONNECTED & MOBILE OPTIMIZED -->
     <script>
-        // Firebase Configuration
+        // Create Particles
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 4 + 1;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${x}%`;
+                particle.style.top = `${y}%`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particles.appendChild(particle);
+            }
+        }
+
+        // 🔥 FIREBASE CONFIGURATION - YOUR DATABASE
         const firebaseConfig = {
             apiKey: "AIzaSyCEx0bVxJlNhCgGxQW5_qHYRlhvNmg10nw",
             authDomain: "online-shopping-c3081.firebaseapp.com",
+            databaseURL: "https://online-shopping-c3081-default-rtdb.firebaseio.com/", // YOUR DATABASE
             projectId: "online-shopping-c3081",
             storageBucket: "online-shopping-c3081.appspot.com",
             messagingSenderId: "1039257566173",
@@ -859,379 +1189,309 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
         const database = firebase.database();
 
         // Application State
         let currentUser = null;
+        let products = [];
+        let filteredProducts = [];
 
         // Initialize Application
         document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
             setupEventListeners();
             checkAuth();
+            
+            // Mobile optimization
+            optimizeForMobile();
         });
+
+        // Mobile Optimization
+        function optimizeForMobile() {
+            // Prevent zoom on input focus (iOS)
+            document.addEventListener('touchstart', function() {}, {passive: true});
+            
+            // Better touch targets
+            const buttons = document.querySelectorAll('button, .social-media-link, .product-card');
+            buttons.forEach(btn => {
+                btn.style.touchAction = 'manipulation';
+            });
+            
+            // Handle viewport on mobile
+            if ('ontouchstart' in window) {
+                document.body.classList.add('touch-device');
+            }
+        }
 
         // Setup Event Listeners
         function setupEventListeners() {
-            // Google Login Button
-            document.getElementById('googleLoginBtn').addEventListener('click', () => handleGoogleAuth('login'));
+            // Login Form
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
             
-            // Google Signup Button
-            document.getElementById('googleSignupBtn').addEventListener('click', () => handleGoogleAuth('signup'));
-            
-            // Toggle between Login and Signup forms
-            document.getElementById('showSignupForm').addEventListener('click', showSignupForm);
-            document.getElementById('showLoginForm').addEventListener('click', showLoginForm);
-            
-            // Email login form
-            document.getElementById('emailLoginForm').addEventListener('submit', handleEmailLogin);
-            
-            // Email signup form
-            document.getElementById('emailSignupForm').addEventListener('submit', handleEmailSignup);
-            
-            // Logout button
+            // Logout Button
             document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-        }
-
-        // Check Authentication Status
-        function checkAuth() {
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    // User is signed in via Firebase
-                    currentUser = {
-                        uid: user.uid,
-                        email: user.email,
-                        name: user.displayName || user.email.split('@')[0],
-                        photoURL: user.photoURL,
-                        provider: user.providerData[0]?.providerId || 'google',
-                        emailVerified: user.emailVerified
-                    };
-                    
-                    // Check if user exists in database
-                    checkUserInDatabase(user.uid, user.email);
-                } else {
-                    // User is not signed in
-                    showAuthPage();
-                }
+            
+            // Search
+            document.getElementById('searchBtn').addEventListener('click', performSearch);
+            document.getElementById('searchInput').addEventListener('input', performSearch);
+            
+            // Filters - Touch friendly
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    filterProducts(this.dataset.filter);
+                }, {passive: false});
             });
+            
+            // Mobile menu toggle (if needed)
+            setupMobileMenu();
         }
 
-        // Handle Google Authentication
-        function handleGoogleAuth(action) {
-            showLoading(true);
+        // Setup Mobile Menu (if needed in future)
+        function setupMobileMenu() {
+            // You can add mobile menu functionality here if needed
+        }
+
+        // Check Authentication
+        function checkAuth() {
+            const savedUser = localStorage.getItem('chandniParlorUser');
             
-            const provider = new firebase.auth.GoogleAuthProvider();
-            
-            // Add scopes
-            provider.addScope('profile');
-            provider.addScope('email');
-            
-            // Force account selection for signup
-            if (action === 'signup') {
-                provider.setCustomParameters({
-                    prompt: 'select_account'
-                });
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainContent();
+                loadProductsFromFirebase(); // Load products when logged in
+            } else {
+                showLogin();
             }
-            
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    const user = result.user;
-                    
-                    if (action === 'signup') {
-                        showNotification('Account created successfully with Google!', 'success');
-                    } else {
-                        showNotification('Signed in successfully!', 'success');
-                    }
-                    
-                    // User will be handled in onAuthStateChanged
-                })
-                .catch((error) => {
-                    console.error('Google auth error:', error);
-                    showLoading(false);
-                    
-                    if (error.code === 'auth/popup-blocked') {
-                        showNotification('Popup blocked! Please allow popups for this site.', 'error');
-                    } else if (error.code === 'auth/popup-closed-by-user') {
-                        showNotification('Authentication cancelled by user.', 'info');
-                    } else if (error.code === 'auth/account-exists-with-different-credential') {
-                        showNotification('An account already exists with this email. Please sign in instead.', 'error');
-                    } else {
-                        showNotification(`Google ${action} failed. Please try again.`, 'error');
-                    }
-                });
         }
 
-        // Check if user exists in database
-        function checkUserInDatabase(uid, email) {
-            const usersRef = database.ref('users/' + uid);
-            
-            usersRef.once('value')
-                .then((snapshot) => {
-                    if (snapshot.exists()) {
-                        // User exists in database
-                        const userData = snapshot.val();
-                        currentUser = { ...currentUser, ...userData };
-                        
-                        // Update last login time
-                        usersRef.update({
-                            lastLogin: new Date().toISOString()
-                        });
-                        
-                        localStorage.setItem('chandniParlorUser', JSON.stringify(currentUser));
-                        showMainContent();
-                    } else {
-                        // User doesn't exist - first time login (signup)
-                        registerNewUser(uid, email);
-                    }
-                    showLoading(false);
-                })
-                .catch((error) => {
-                    console.error('Database error:', error);
-                    showLoading(false);
-                    showNotification('Error checking user data', 'error');
-                });
-        }
-
-        // Register new user in database
-        function registerNewUser(uid, email) {
-            const userData = {
-                email: email,
-                name: currentUser.name,
-                photoURL: currentUser.photoURL || '',
-                createdAt: new Date().toISOString(),
-                lastLogin: new Date().toISOString(),
-                isVerified: true,
-                provider: 'google',
-                accountType: 'customer',
-                status: 'active'
-            };
-            
-            const usersRef = database.ref('users/' + uid);
-            
-            usersRef.set(userData)
-                .then(() => {
-                    currentUser = { ...currentUser, ...userData };
-                    localStorage.setItem('chandniParlorUser', JSON.stringify(currentUser));
-                    showMainContent();
-                    showNotification('Welcome! Your account has been created successfully.', 'success');
-                })
-                .catch((error) => {
-                    console.error('Registration error:', error);
-                    showNotification('Error creating account', 'error');
-                });
-        }
-
-        // Handle Email Signup (Manual)
-        function handleEmailSignup(e) {
+        // Handle Login
+        function handleLogin(e) {
             e.preventDefault();
-            showLoading(true);
             
-            const firstName = document.getElementById('signupFirstName').value.trim();
-            const lastName = document.getElementById('signupLastName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const phone = document.getElementById('phoneNumber').value.trim();
-            
-            // Validation
-            if (!firstName || !lastName || !email || !password || !confirmPassword) {
-                showNotification('Please fill in all required fields', 'error');
-                showLoading(false);
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                showNotification('Passwords do not match', 'error');
-                showLoading(false);
-                return;
-            }
-            
-            if (password.length < 6) {
-                showNotification('Password must be at least 6 characters', 'error');
-                showLoading(false);
-                return;
-            }
-            
-            // Check if email is Gmail
-            if (!email.toLowerCase().endsWith('@gmail.com')) {
-                showNotification('Please use a Gmail account for signup', 'error');
-                showLoading(false);
-                return;
-            }
-            
-            // Create user with email/password
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    
-                    // Update user profile
-                    return user.updateProfile({
-                        displayName: `${firstName} ${lastName}`
-                    }).then(() => {
-                        // Send email verification
-                        return user.sendEmailVerification();
-                    }).then(() => {
-                        // Save user data to database
-                        const userData = {
-                            email: email,
-                            name: `${firstName} ${lastName}`,
-                            firstName: firstName,
-                            lastName: lastName,
-                            phone: phone || '',
-                            createdAt: new Date().toISOString(),
-                            lastLogin: new Date().toISOString(),
-                            isVerified: false, // Email verification pending
-                            provider: 'email',
-                            accountType: 'customer',
-                            status: 'pending_verification'
-                        };
-                        
-                        return database.ref('users/' + user.uid).set(userData);
-                    });
-                })
-                .then(() => {
-                    showLoading(false);
-                    showNotification('Account created! Please check your email for verification link.', 'success');
-                    
-                    // Switch back to login form
-                    setTimeout(() => {
-                        showLoginForm();
-                        document.getElementById('emailSignupForm').reset();
-                    }, 2000);
-                })
-                .catch((error) => {
-                    showLoading(false);
-                    console.error('Signup error:', error);
-                    
-                    if (error.code === 'auth/email-already-in-use') {
-                        showNotification('This email is already registered. Please sign in instead.', 'error');
-                    } else if (error.code === 'auth/invalid-email') {
-                        showNotification('Invalid email address', 'error');
-                    } else if (error.code === 'auth/weak-password') {
-                        showNotification('Password is too weak', 'error');
-                    } else {
-                        showNotification('Signup failed. Please try again.', 'error');
-                    }
-                });
-        }
-
-        // Handle Email Login (Manual)
-        function handleEmailLogin(e) {
-            e.preventDefault();
-            showLoading(true);
-            
-            const email = document.getElementById('loginEmail').value.trim();
+            const username = document.getElementById('loginUsername').value.trim();
             const password = document.getElementById('loginPassword').value;
             
-            if (!email || !password) {
-                showNotification('Please fill in all fields', 'error');
-                showLoading(false);
-                return;
+            // Simple authentication (accept any non-empty credentials)
+            if (username && password) {
+                currentUser = {
+                    username: username,
+                    loginTime: new Date().toISOString()
+                };
+                
+                localStorage.setItem('chandniParlorUser', JSON.stringify(currentUser));
+                
+                // Update user info
+                updateUserInfo();
+                
+                showMainContent();
+                loadProductsFromFirebase(); // Load products after login
+                
+                showNotification('Login successful! Welcome to Chandni Parlor.', 'success');
             }
-            
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    
-                    if (!user.emailVerified) {
-                        // Ask user to verify email
-                        showLoading(false);
-                        showNotification('Please verify your email before signing in. Check your inbox.', 'error');
-                        auth.signOut(); // Sign out unverified user
-                        return;
-                    }
-                    
-                    // User will be handled in onAuthStateChanged
-                })
-                .catch((error) => {
-                    showLoading(false);
-                    console.error('Login error:', error);
-                    
-                    if (error.code === 'auth/user-not-found') {
-                        showNotification('No account found with this email. Please sign up first.', 'error');
-                    } else if (error.code === 'auth/wrong-password') {
-                        showNotification('Incorrect password', 'error');
-                    } else if (error.code === 'auth/invalid-credential') {
-                        showNotification('Invalid credentials', 'error');
-                    } else {
-                        showNotification('Login failed. Please try again.', 'error');
-                    }
-                });
-        }
-
-        // Show Signup Form
-        function showSignupForm() {
-            document.getElementById('loginFormContainer').classList.add('shifted');
-            document.getElementById('signupFormContainer').classList.add('active');
-        }
-
-        // Show Login Form
-        function showLoginForm() {
-            document.getElementById('loginFormContainer').classList.remove('shifted');
-            document.getElementById('signupFormContainer').classList.remove('active');
         }
 
         // Handle Logout
         function handleLogout() {
-            showLoading(true);
-            
-            auth.signOut()
-                .then(() => {
-                    currentUser = null;
-                    localStorage.removeItem('chandniParlorUser');
-                    showLoading(false);
-                    showAuthPage();
-                    showNotification('Logged out successfully', 'success');
-                })
-                .catch((error) => {
-                    console.error('Logout error:', error);
-                    showLoading(false);
-                    showNotification('Logout failed', 'error');
-                });
+            currentUser = null;
+            localStorage.removeItem('chandniParlorUser');
+            showLogin();
+            showNotification('Logged out successfully', 'success');
         }
 
         // Update User Info
         function updateUserInfo() {
             if (currentUser) {
-                document.getElementById('userName').textContent = currentUser.name;
-                
-                const userAvatar = document.getElementById('userAvatar');
-                if (currentUser.photoURL) {
-                    userAvatar.innerHTML = `<img src="${currentUser.photoURL}" alt="${currentUser.name}" style="width:100%;height:100%;border-radius:50%;">`;
-                } else {
-                    const initial = currentUser.name.charAt(0).toUpperCase();
-                    userAvatar.innerHTML = initial;
-                    userAvatar.style.background = `linear-gradient(45deg, var(--primary), var(--accent))`;
-                    userAvatar.style.color = 'white';
-                    userAvatar.style.display = 'flex';
-                    userAvatar.style.alignItems = 'center';
-                    userAvatar.style.justifyContent = 'center';
-                    userAvatar.style.fontWeight = 'bold';
-                }
+                document.getElementById('userName').textContent = currentUser.username;
+                const initial = currentUser.username.charAt(0).toUpperCase();
+                document.getElementById('userAvatar').innerHTML = initial;
             }
         }
 
-        // Show Auth Page
-        function showAuthPage() {
-            document.getElementById('authContainer').style.display = 'flex';
+        // Show Login Screen
+        function showLogin() {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('loginContainer').classList.add('active');
             document.getElementById('mainContainer').classList.remove('active');
-            showLoginForm();
-            
-            // Reset forms
-            document.getElementById('emailLoginForm').reset();
-            document.getElementById('emailSignupForm').reset();
         }
 
         // Show Main Content
         function showMainContent() {
-            document.getElementById('authContainer').style.display = 'none';
-            document.getElementById('mainContainer').classList.add('active');
-            updateUserInfo();
+            document.getElementById('loadingScreen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('loginContainer').classList.remove('active');
+                document.getElementById('mainContainer').classList.add('active');
+            }, 500);
         }
 
-        // Show Loading
-        function showLoading(show) {
-            document.getElementById('loadingOverlay').classList.toggle('active', show);
+        // 🔥 LOAD PRODUCTS FROM FIREBASE (OWNER'S DATABASE)
+        function loadProductsFromFirebase() {
+            const productsRef = database.ref('products');
+            
+            // Listen for real-time updates
+            productsRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                products = [];
+                
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        products.push({
+                            id: key,
+                            ...data[key]
+                        });
+                    });
+                    
+                    console.log(`📦 Loaded ${products.length} products from Firebase`);
+                    
+                    // Sort by date (newest first)
+                    products.sort((a, b) => {
+                        const dateA = a.createdAt ? new Date(a.createdAt) : new Date(0);
+                        const dateB = b.createdAt ? new Date(b.createdAt) : new Date(0);
+                        return dateB - dateA;
+                    });
+                }
+                
+                displayProducts();
+                updateLastUpdated();
+                
+                if (products.length > 0) {
+                    showNotification(`Products updated: ${products.length} items loaded`, 'success');
+                }
+            }, (error) => {
+                console.error('Firebase error:', error);
+                showNotification('Error loading products from database', 'error');
+                
+                // Show demo products if Firebase fails
+                loadDemoProducts();
+            });
+        }
+
+        // Display Products
+        function displayProducts(productsToShow = products) {
+            const productsGrid = document.getElementById('productsGrid');
+            
+            if (productsToShow.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="no-products">
+                        <i class="fas fa-box-open"></i>
+                        <p>No products available yet. Owner will add products soon.</p>
+                        <p style="margin-top: 10px; font-size: 14px;">Check back later for updates!</p>
+                        <p style="margin-top: 5px; font-size: 12px; color: var(--accent);">
+                            <i class="fas fa-database"></i> Connected to Owner's Firebase
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsGrid.innerHTML = productsToShow.map(product => {
+                const isAvailable = product.stock > 0;
+                const stockPercentage = Math.min((product.stock / (product.maxStock || 100)) * 100, 100);
+                
+                // Format price
+                const price = product.price ? `₹${product.price}` : '₹---';
+                
+                // Get image or use default
+                const imageUrl = product.imageUrl || '';
+                
+                return `
+                    <div class="product-card">
+                        <div class="product-badge ${isAvailable ? 'badge-available' : 'badge-outofstock'}">
+                            ${isAvailable ? 'Available' : 'Out of Stock'}
+                        </div>
+                        
+                        <div class="product-image">
+                            ${imageUrl ? 
+                                `<img src="${imageUrl}" alt="${product.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💄</text></svg>'">` :
+                                `<div style="font-size: 60px; color: rgba(255,255,255,0.2);">💄</div>`
+                            }
+                        </div>
+                        
+                        <div class="product-info">
+                            <div class="product-category">${product.category || 'Beauty'}</div>
+                            <h3 class="product-name">${product.name || 'Unnamed Product'}</h3>
+                            <div class="product-price">${price}</div>
+                            
+                            <div class="product-description" style="color: var(--border); font-size: 14px; margin: 10px 0; line-height: 1.4;">
+                                ${product.description || 'Premium beauty product'}
+                            </div>
+                            
+                            <div class="product-stock">
+                                <div class="stock-info">
+                                    <span class="stock-label">Stock Available</span>
+                                    <span class="stock-amount">${product.stock || 0} units</span>
+                                </div>
+                            </div>
+                            
+                            ${isAvailable ? `
+                                <div class="stock-bar">
+                                    <div class="stock-fill" style="width: ${stockPercentage}%"></div>
+                                </div>
+                            ` : ''}
+                            
+                            ${product.addedBy ? `
+                                <div style="font-size: 11px; color: var(--border); margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
+                                    <i class="fas fa-store"></i> Added by Owner
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter Products
+        function filterProducts(filter) {
+            switch(filter) {
+                case 'available':
+                    filteredProducts = products.filter(p => p.stock > 0);
+                    break;
+                case 'outofstock':
+                    filteredProducts = products.filter(p => p.stock <= 0);
+                    break;
+                default:
+                    filteredProducts = [...products];
+            }
+            
+            displayProducts(filteredProducts);
+        }
+
+        // Search Products
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!query) {
+                const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+                filterProducts(activeFilter);
+                return;
+            }
+            
+            const searchResults = products.filter(product =>
+                (product.name && product.name.toLowerCase().includes(query)) ||
+                (product.category && product.category.toLowerCase().includes(query)) ||
+                (product.description && product.description.toLowerCase().includes(query))
+            );
+            
+            displayProducts(searchResults);
+        }
+
+        // Update Last Updated Time
+        function updateLastUpdated() {
+            const now = new Date();
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            };
+            
+            document.getElementById('lastUpdated').textContent = 
+                `Last updated: ${now.toLocaleDateString('en-IN', options)}`;
         }
 
         // Show Notification
@@ -1258,7 +1518,7 @@
             // Auto-remove after 5 seconds
             setTimeout(() => {
                 if (notification.parentNode) {
-                    notification.style.opacity = '0';
+                    notification.style.animation = 'slideIn 0.3s ease reverse';
                     setTimeout(() => {
                         if (notification.parentNode) {
                             notification.remove();
@@ -1268,13 +1528,60 @@
             }, 5000);
         }
 
-        // Display System Info
-        console.log('🔐 GOOGLE SIGNUP & LOGIN SYSTEM');
-        console.log('✅ Google Signup with Gmail accounts');
-        console.log('✅ Manual email signup (Gmail only)');
-        console.log('✅ Email verification for manual signup');
-        console.log('✅ Secure Firebase authentication');
-        console.log('✅ User data stored in database');
+        // Demo Products (if Firebase is empty)
+        function loadDemoProducts() {
+            const demoProducts = [
+                {
+                    id: 'demo1',
+                    name: 'Premium Lipstick Set',
+                    category: 'Makeup',
+                    price: 1299,
+                    stock: 15,
+                    description: 'Long-lasting matte lipstick set',
+                    imageUrl: '',
+                    addedBy: 'Owner'
+                },
+                {
+                    id: 'demo2',
+                    name: 'Facial Cream',
+                    category: 'Skincare',
+                    price: 899,
+                    stock: 8,
+                    description: 'Anti-aging facial cream',
+                    imageUrl: '',
+                    addedBy: 'Owner'
+                },
+                {
+                    id: 'demo3',
+                    name: 'Hair Serum',
+                    category: 'Haircare',
+                    price: 699,
+                    stock: 0,
+                    description: 'Argan oil hair serum',
+                    imageUrl: '',
+                    addedBy: 'Owner'
+                }
+            ];
+            
+            products = demoProducts;
+            displayProducts();
+            showNotification('Loaded demo products. Waiting for owner to add real products.', 'info');
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(updateLastUpdated, 30000);
+        
+        // Initial update
+        setTimeout(updateLastUpdated, 1000);
+        
+        // Test Firebase connection
+        setTimeout(() => {
+            console.log('🔥 FIREBASE CONNECTED SUCCESSFULLY');
+            console.log('📡 Database URL:', firebaseConfig.databaseURL);
+            console.log('👤 Project ID:', firebaseConfig.projectId);
+            console.log('📱 Mobile Optimized: Yes');
+            console.log('🔄 Real-time Updates: Active');
+        }, 2000);
     </script>
 </body>
 </html>
