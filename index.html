@@ -567,6 +567,11 @@
             transform: scale(1.02);
         }
 
+        /* Error message hide */
+        .auth-error {
+            display: none !important;
+        }
+
         /* ----- CART SIDEBAR ----- */
         .cart-sidebar {
             position: fixed;
@@ -941,7 +946,7 @@
         }
 
         // ============================================
-        // AUTH - GOOGLE SIGN-IN
+        // AUTH - GOOGLE SIGN-IN (No error messages)
         // ============================================
         function googleSignIn() {
             auth.signInWithPopup(googleProvider)
@@ -949,12 +954,14 @@
                     currentUser = result.user;
                     saveUserToDB(currentUser);
                     updateProfileUI();
-                    // ✅ Auto close modal after login - automatic website visit
                     document.getElementById('authModal').classList.remove('active');
+                    // ✅ Success message - only success, no error
                     showToast('✅ Welcome ' + currentUser.displayName + '! 🎉');
                 })
                 .catch(err => {
-                    showToast('❌ Google sign-in failed: ' + err.message, true);
+                    // ❌ Error message completely hidden - no error shown to user
+                    // Silently fail - user sees nothing
+                    console.log('Sign-in error (silent):', err.message);
                 });
         }
 
